@@ -10,7 +10,9 @@ import SnapKit
 import MapKit
 
 final class WeatherViewController: UIViewController {
-     
+    
+    private let locationManager: CLLocationManager = CLLocationManager()
+    
     private let mapView: MKMapView = {
         let view = MKMapView()
         return view
@@ -54,9 +56,11 @@ final class WeatherViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        setupConstraints()
-        setupActions()
+        self.configureLocationManagerConnection()
+        self.setupUI()
+        self.setupConstraints()
+        self.setupActions()
+        self.configureLocationManagerConnection()
     }
     
     // MARK: - UI Setup
@@ -104,5 +108,12 @@ final class WeatherViewController: UIViewController {
     
     @objc private func refreshButtonTapped() {
         // 날씨 새로고침 구현
+    }
+}
+
+extension WeatherViewController: CLLocationManagerDelegate {
+    
+    func configureLocationManagerConnection() {
+        self.locationManager.delegate = self
     }
 }
