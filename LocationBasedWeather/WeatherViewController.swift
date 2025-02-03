@@ -11,6 +11,10 @@ import MapKit
 
 final class WeatherViewController: UIViewController {
     
+    private let defaultCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 37.6544, longitude: 127.0499)
+    
+    private lazy var defaultRegion: MKCoordinateRegion = MKCoordinateRegion(center: self.defaultCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+    
     private let locationManager: CLLocationManager = CLLocationManager()
     
     private let mapView: MKMapView = {
@@ -56,7 +60,6 @@ final class WeatherViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureLocationManagerConnection()
         self.setupUI()
         self.setupConstraints()
         self.setupActions()
