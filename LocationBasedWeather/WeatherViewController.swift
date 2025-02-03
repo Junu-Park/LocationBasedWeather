@@ -107,10 +107,12 @@ final class WeatherViewController: UIViewController {
     // MARK: - Actions
     @objc private func currentLocationButtonTapped() {
         // 현재 위치 가져오기 구현
+        self.checkLocationService()
     }
     
     @objc private func refreshButtonTapped() {
         // 날씨 새로고침 구현
+        self.checkLocationService()
     }
     
     // MARK: - Location
@@ -118,10 +120,31 @@ final class WeatherViewController: UIViewController {
     private func checkLocationService() {
         DispatchQueue.global().async {
             if CLLocationManager.locationServicesEnabled() {
-                
+                self.checkLocationAuthorization()
             } else {
-                
+                self.presentLocationServiceAlert()
             }
+        }
+    }
+    
+    // 위치 권한 체크
+    private func checkLocationAuthorization() {
+        switch self.locationManager.authorizationStatus {
+        case .notDetermined:
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.requestWhenInUseAuthorization()
+        case .restricted:
+            break
+        case .denied:
+            self.mapView.setRegion(self.defaultRegion, animated: true)
+            self.presentLocationAuthorizationAlert()
+        case .authorizedAlways:
+            self.locationManager.startUpdatingLocation()
+        case .authorizedWhenInUse:
+            self.locationManager.requestAlwaysAuthorization()
+            self.locationManager.startUpdatingLocation()
+        default:
+            break
         }
     }
 }
@@ -136,29 +159,43 @@ extension WeatherViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         self.checkLocationService()
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let region: MKCoordinateRegion = MKCoordinateRegion(center: locations.first?.coordinate ?? self.defaultCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+        self.mapView.setRegion(region, animated: true)
+        
+        let annotation: MKPointAnnotation = MKPointAnnotation()
+        annotation.coordinate = locations.first?.coordinate ?? self.defaultCoordinate
+        self.mapView.addAnnotation(annotation)
+        
+        self.locationManager.stopUpdatingLocation()
+    }
 }
 
 extension WeatherViewController {
     // TODO: 실기기에서만 동작
     func presentLocationServiceAlert() {
-        let ac: UIAlertController = UIAlertController(title: "위치 사용 설정", message: "위치 기반 날씨를 받아오기 위해서는 위치 사용이 필요합니다. 위치 사용 설정으로 이동하시겠습니까?", preferredStyle: .alert)
-        let cancelAction: UIAlertAction = UIAlertAction(title: "취소", style: .cancel)
-        let confirmAction: UIAlertAction = UIAlertAction(title: "확인", style: .default) { _ in
-            if let url = NSURL(string:"App-prefs:Privacy&path=LOCATION") as? URL {
-                UIApplication.shared.open(url)
-                 /* 동작하는 URL
-                "App-prefs:Privacy&path=LOCATION"
-                "App-Prefs:Privacy&path=LOCATION"
-                 */
+        DispatchQueue.main.async {
+            let ac: UIAlertController = UIAlertController(title: "위치 사용 설정", message: "위치 기반 날씨를 받아오기 위해서는 위치 사용이 필요합니다. 위치 사용 설정으로 이동하시겠습니까?", preferredStyle: .alert)
+            let cancelAction: UIAlertAction = UIAlertAction(title: "취소", style: .cancel)
+            let confirmAction: UIAlertAction = UIAlertAction(title: "확인", style: .default) { _ in
+                if let url = NSURL(string:"App-prefs:Privacy&path=LOCATION") as? URL {
+                    UIApplication.shared.open(url)
+                     /* 동작하는 URL
+                    "App-prefs:Privacy&path=LOCATION"
+                    "App-Prefs:Privacy&path=LOCATION"
+                     */
+                }
             }
+            ac.addAction(cancelAction)
+            ac.addAction(confirmAction)
+            self.present(ac, animated: true)
         }
-        ac.addAction(cancelAction)
-        ac.addAction(confirmAction)
-        self.present(ac, animated: true)
     }
     
     
     func presentLocationAuthorizationAlert() {
+        DispatchQueue.main.async {
         let ac: UIAlertController = UIAlertController(title: "위치 권한 설정", message: "위치 기반 날씨를 받아오기 위해서는 위치 권한이 필요합니다. 위치 권한 설정으로 이동하시겠습니까?", preferredStyle: .alert)
         let cancelAction: UIAlertAction = UIAlertAction(title: "취소", style: .cancel)
         let confirmAction: UIAlertAction = UIAlertAction(title: "확인", style: .default) { _ in
@@ -168,6 +205,7 @@ extension WeatherViewController {
         }
         ac.addAction(cancelAction)
         ac.addAction(confirmAction)
-        self.present(ac, animated: true)
+            self.present(ac, animated: true)
+        }
     }
 }
