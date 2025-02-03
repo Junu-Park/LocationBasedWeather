@@ -15,7 +15,7 @@ final class WeatherViewController: UIViewController {
     
     private lazy var defaultRegion: MKCoordinateRegion = MKCoordinateRegion(center: self.defaultCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
     
-    private let locationManager: CLLocationManager = CLLocationManager()
+    private lazy var locationManager: CLLocationManager = CLLocationManager()
     
     private let mapView: MKMapView = {
         let view = MKMapView()
@@ -112,11 +112,28 @@ final class WeatherViewController: UIViewController {
     @objc private func refreshButtonTapped() {
         // 날씨 새로고침 구현
     }
+    
+    // MARK: - Location
+    // 위치 서비스 가능 여부 체크
+    private func checkLocationService() {
+        DispatchQueue.global().async {
+            if CLLocationManager.locationServicesEnabled() {
+                
+            } else {
+                
+            }
+        }
+    }
 }
 
 extension WeatherViewController: CLLocationManagerDelegate {
     
     func configureLocationManagerConnection() {
         self.locationManager.delegate = self
+    }
+    
+    // 위치 권한 상태가 바뀐 경우
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        self.checkLocationService()
     }
 }
