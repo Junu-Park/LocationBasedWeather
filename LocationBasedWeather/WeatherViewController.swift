@@ -137,3 +137,37 @@ extension WeatherViewController: CLLocationManagerDelegate {
         self.checkLocationService()
     }
 }
+
+extension WeatherViewController {
+    // TODO: 실기기에서만 동작
+    func presentLocationServiceAlert() {
+        let ac: UIAlertController = UIAlertController(title: "위치 사용 설정", message: "위치 기반 날씨를 받아오기 위해서는 위치 사용이 필요합니다. 위치 사용 설정으로 이동하시겠습니까?", preferredStyle: .alert)
+        let cancelAction: UIAlertAction = UIAlertAction(title: "취소", style: .cancel)
+        let confirmAction: UIAlertAction = UIAlertAction(title: "확인", style: .default) { _ in
+            if let url = NSURL(string:"App-prefs:Privacy&path=LOCATION") as? URL {
+                UIApplication.shared.open(url)
+                 /* 동작하는 URL
+                "App-prefs:Privacy&path=LOCATION"
+                "App-Prefs:Privacy&path=LOCATION"
+                 */
+            }
+        }
+        ac.addAction(cancelAction)
+        ac.addAction(confirmAction)
+        self.present(ac, animated: true)
+    }
+    
+    
+    func presentLocationAuthorizationAlert() {
+        let ac: UIAlertController = UIAlertController(title: "위치 권한 설정", message: "위치 기반 날씨를 받아오기 위해서는 위치 권한이 필요합니다. 위치 권한 설정으로 이동하시겠습니까?", preferredStyle: .alert)
+        let cancelAction: UIAlertAction = UIAlertAction(title: "취소", style: .cancel)
+        let confirmAction: UIAlertAction = UIAlertAction(title: "확인", style: .default) { _ in
+            if let settingURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingURL)
+            }
+        }
+        ac.addAction(cancelAction)
+        ac.addAction(confirmAction)
+        self.present(ac, animated: true)
+    }
+}
