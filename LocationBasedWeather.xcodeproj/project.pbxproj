@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		5174A4C92D50B5A200C0EC9E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5174A4C82D50B5A200C0EC9E /* SnapKit */; };
 		5174A4CC2D50B5B200C0EC9E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5174A4CB2D50B5B200C0EC9E /* Alamofire */; };
-		5174A5912D511B9D00C0EC9E /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5174A5902D511B9D00C0EC9E /* .gitignore */; };
+		5174A5A32D511C5200C0EC9E /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5174A5A22D511C5200C0EC9E /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5174A4A02D50B2A600C0EC9E /* LocationBasedWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = LocationBasedWeather.app; path = "/Users/junupark/Desktop/SeSAC iOS/7주차/2월 3일 월요일 25일차/LocationBasedWeather/build/Debug-iphoneos/LocationBasedWeather.app"; sourceTree = "<absolute>"; };
-		5174A5902D511B9D00C0EC9E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		5174A5A22D511C5200C0EC9E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		5174A5B42D511C9500C0EC9E /* LocationBasedWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = LocationBasedWeather.app; path = "/Users/junupark/Desktop/SeSAC iOS/7주차/2월 3일 월요일 25일차/LocationBasedWeather/build/Debug-iphoneos/LocationBasedWeather.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -54,8 +54,8 @@
 		5174A4972D50B2A600C0EC9E = {
 			isa = PBXGroup;
 			children = (
+				5174A5A22D511C5200C0EC9E /* .gitignore */,
 				5174A4A22D50B2A600C0EC9E /* LocationBasedWeather */,
-				5174A5902D511B9D00C0EC9E /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,7 +83,7 @@
 				5174A4CB2D50B5B200C0EC9E /* Alamofire */,
 			);
 			productName = LocationBasedWeather;
-			productReference = 5174A4A02D50B2A600C0EC9E /* LocationBasedWeather.app */;
+			productReference = 5174A5B42D511C9500C0EC9E /* LocationBasedWeather.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -129,7 +129,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5174A5912D511B9D00C0EC9E /* .gitignore in Resources */,
+				5174A5A32D511C5200C0EC9E /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
