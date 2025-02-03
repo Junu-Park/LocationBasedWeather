@@ -185,6 +185,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
         self.requestData.lat = coor.latitude
         self.requestData.lon = coor.longitude
         self.locationManager.stopUpdatingLocation()
+        self.refreshButtonTapped()
     }
 }
 
