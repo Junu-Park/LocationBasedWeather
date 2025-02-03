@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import MapKit
+import Alamofire
 
 final class WeatherViewController: UIViewController {
     
@@ -56,6 +57,8 @@ final class WeatherViewController: UIViewController {
         button.layer.shadowRadius = 4
         return button
     }()
+    
+    private var requestData: WeatherRequest = WeatherRequest(lat: 37.6544, lon: 127.0499)
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -112,7 +115,14 @@ final class WeatherViewController: UIViewController {
     
     @objc private func refreshButtonTapped() {
         // 날씨 새로고침 구현
-        self.checkLocationService()
+        NetworkManager.shared.requestWeatherData(params: self.requestData) { (response: Result<WeatherResponse, AFError>) in
+            switch response {
+            case .success(let success):
+                self.weatherInfoLabel.text = "\(Date().convertToString())\n현재온도:\(success.main.temp.convertToCelsius())℃\n최저온도:\(success.main.temp_min.convertToCelsius())℃\n최고온도:\(success.main.temp_max.convertToCelsius())℃\n풍속:\(success.wind.speed)m/s\n습도:\(success.main.humidity)%"
+            case .failure:
+                self.weatherInfoLabel.text = "날씨 정보 가져오기 실패"
+            }
+        }
     }
     
     // MARK: - Location
@@ -137,6 +147,8 @@ final class WeatherViewController: UIViewController {
             break
         case .denied:
             self.mapView.setRegion(self.defaultRegion, animated: true)
+            self.requestData.lat = self.defaultRegion.center.latitude
+            self.requestData.lon = self.defaultRegion.center.longitude
             self.presentLocationAuthorizationAlert()
         case .authorizedAlways:
             self.locationManager.startUpdatingLocation()
@@ -161,13 +173,17 @@ extension WeatherViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let region: MKCoordinateRegion = MKCoordinateRegion(center: locations.first?.coordinate ?? self.defaultCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+        
+        guard let coor = locations.first?.coordinate else { return }
+        
+        let region: MKCoordinateRegion = MKCoordinateRegion(center: coor, latitudinalMeters: 300, longitudinalMeters: 300)
         self.mapView.setRegion(region, animated: true)
         
         let annotation: MKPointAnnotation = MKPointAnnotation()
-        annotation.coordinate = locations.first?.coordinate ?? self.defaultCoordinate
+        annotation.coordinate = coor
         self.mapView.addAnnotation(annotation)
-        
+        self.requestData.lat = coor.latitude
+        self.requestData.lon = coor.longitude
         self.locationManager.stopUpdatingLocation()
     }
 }
