@@ -67,6 +67,7 @@ final class WeatherViewController: UIViewController {
         self.setupConstraints()
         self.setupActions()
         self.configureLocationManagerConnection()
+        self.configureNavigationItem()
     }
     
     // MARK: - UI Setup
@@ -107,6 +108,12 @@ final class WeatherViewController: UIViewController {
         refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
     }
     
+    private func configureNavigationItem() {
+        let rightItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "photo"), style: .plain, target: self, action: #selector(self.imageButtonTapped))
+        
+        self.navigationItem.setRightBarButton(rightItem, animated: true)
+    }
+    
     // MARK: - Actions
     @objc private func currentLocationButtonTapped() {
         // 현재 위치 가져오기 구현
@@ -123,6 +130,10 @@ final class WeatherViewController: UIViewController {
                 self.weatherInfoLabel.text = "날씨 정보 가져오기 실패"
             }
         }
+    }
+    
+    @objc private func imageButtonTapped() {
+        self.navigationController?.pushViewController(ImagePickerViewController(), animated: true)
     }
     
     // MARK: - Location
