@@ -39,11 +39,7 @@ final class ImagePickerViewController: UIViewController {
     private let imageCollectionView: ImageCollectionView = ImageCollectionView(layout: UICollectionViewFlowLayout())
     
     
-    private var uiimageList: [UIImage] = [] {
-        didSet {
-            self.imageCollectionView.reloadData()
-        }
-    }
+    private var uiimageList: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +91,7 @@ final class ImagePickerViewController: UIViewController {
     @objc private func phPickerTapped() {
         
         var configure: PHPickerConfiguration = PHPickerConfiguration()
-        configure.selectionLimit = 3
+        configure.selectionLimit = 0
         let phpVC: PHPickerViewController = PHPickerViewController(configuration: configure)
         phpVC.delegate = self
         self.present(phpVC, animated: true)
@@ -124,11 +120,43 @@ extension ImagePickerViewController: UICollectionViewDelegate, UICollectionViewD
 }
 
 extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.uiimageList.append(image)
+            self.imageCollectionView.reloadData()
+        } else {
+            print("사진 가져오기 실패")
+        }
+        self.dismiss(animated: true)
+    }
 }
 
 extension ImagePickerViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
+        if !results.isEmpty {
+            
+            let group: DispatchGroup = DispatchGroup()
+            
+            results.forEach { result in
+                if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
+                    group.enter()
+                    result.itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                        if let uiimage = image as? UIImage {
+                            self.uiimageList.append(uiimage)
+                            group.leave()
+                        }
+                    }
+                } else {
+                    return
+                }
+            }
+            group.notify(queue: .main) {
+                self.imageCollectionView.reloadData()
+                self.dismiss(animated: true)
+            }
+        } else {
+            self.dismiss(animated: true)
+        }
     }
 }
