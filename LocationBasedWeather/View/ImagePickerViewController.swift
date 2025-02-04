@@ -5,6 +5,7 @@
 //  Created by 박준우 on 2/4/25.
 //
 
+import PhotosUI
 import UIKit
 
 import SnapKit
@@ -63,10 +64,30 @@ final class ImagePickerViewController: UIViewController {
     }
     
     @objc private func imagePickerTapped() {
-        print(#function)
+        
+        let ipC: UIImagePickerController = UIImagePickerController()
+        ipC.delegate = self
+        ipC.sourceType = .photoLibrary
+        ipC.allowsEditing = true
+        self.present(ipC, animated: true)
     }
     
     @objc private func phPickerTapped() {
-        print(#function)
+        
+        var configure: PHPickerConfiguration = PHPickerConfiguration()
+        configure.selectionLimit = 3
+        let phpVC: PHPickerViewController = PHPickerViewController(configuration: configure)
+        phpVC.delegate = self
+        self.present(phpVC, animated: true)
+    }
+}
+
+extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+}
+
+extension ImagePickerViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
     }
 }
