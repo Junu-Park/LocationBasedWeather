@@ -58,6 +58,8 @@ final class WeatherViewController: UIViewController {
         return button
     }()
     
+    private let imageView: UIImageView = UIImageView()
+    
     private var requestData: WeatherRequest = WeatherRequest(lat: 37.6544, lon: 127.0499)
     
     // MARK: - Lifecycle
@@ -74,7 +76,7 @@ final class WeatherViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        [mapView, weatherInfoLabel, currentLocationButton, refreshButton].forEach {
+        [mapView, weatherInfoLabel, currentLocationButton, refreshButton, imageView].forEach {
             view.addSubview($0)
         }
     }
@@ -100,6 +102,12 @@ final class WeatherViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.width.height.equalTo(50)
+        }
+        
+        imageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.size.equalTo(100)
+            make.top.equalTo(self.weatherInfoLabel.snp.bottom).offset(16)
         }
     }
     
@@ -133,7 +141,11 @@ final class WeatherViewController: UIViewController {
     }
     
     @objc private func imageButtonTapped() {
-        self.navigationController?.pushViewController(ImagePickerViewController(), animated: true)
+        let vc: ImagePickerViewController = ImagePickerViewController()
+        vc.closure = { image in
+            self.imageView.image = image
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - Location

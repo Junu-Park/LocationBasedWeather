@@ -41,6 +41,8 @@ final class ImagePickerViewController: UIViewController {
     
     private var uiimageList: [UIImage] = []
     
+    var closure: ((UIImage) -> ())?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -116,6 +118,10 @@ extension ImagePickerViewController: UICollectionViewDelegate, UICollectionViewD
         } else {
             return UICollectionViewCell()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.closure?(self.uiimageList[indexPath.item])
     }
 }
 
