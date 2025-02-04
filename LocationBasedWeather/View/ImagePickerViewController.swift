@@ -36,9 +36,22 @@ final class ImagePickerViewController: UIViewController {
         return btn
     }()
     
+    private let imageCollectionView: ImageCollectionView = ImageCollectionView(layout: UICollectionViewFlowLayout())
+    
+    
+    private var uiimageList: [UIImage] = [] {
+        didSet {
+            self.imageCollectionView.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
+        self.imageCollectionView.backgroundColor = UIColor.yellow
+        
+        self.imageCollectionView.delegate = self
+        self.imageCollectionView.dataSource = self
         
         self.configureHierarchy()
         self.configureLayout()
@@ -47,19 +60,26 @@ final class ImagePickerViewController: UIViewController {
     private func configureHierarchy() {
         self.view.addSubview(self.imagePickerButton)
         self.view.addSubview(self.phPickerButton)
+        self.view.addSubview(self.imageCollectionView)
     }
     
     private func configureLayout() {
+        
+        self.imageCollectionView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view.snp.centerY)
+        }
+        
         self.imagePickerButton.snp.makeConstraints { make in
             make.width.equalTo(250)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-50)
+            make.centerY.equalToSuperview().offset(50)
         }
         
         self.phPickerButton.snp.makeConstraints { make in
             make.width.equalTo(250)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(50)
+            make.centerY.equalToSuperview().offset(100)
         }
     }
     
@@ -79,6 +99,27 @@ final class ImagePickerViewController: UIViewController {
         let phpVC: PHPickerViewController = PHPickerViewController(configuration: configure)
         phpVC.delegate = self
         self.present(phpVC, animated: true)
+    }
+}
+
+extension ImagePickerViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width / 3 - (8 * 2), height: collectionView.frame.width / 3 - (8 * 2))
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return uiimageList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.id, for: indexPath) as? ImageCollectionViewCell {
+            cell.imageView.image = self.uiimageList[indexPath.item]
+            
+            return cell
+        } else {
+            return UICollectionViewCell()
+        }
     }
 }
 
