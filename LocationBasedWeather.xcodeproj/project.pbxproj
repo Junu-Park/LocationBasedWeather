@@ -20,7 +20,7 @@
 		5174A4B22D50B2A800C0EC9E /* Exceptions for "LocationBasedWeather" folder in "LocationBasedWeather" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				App/Info.plist,
 			);
 			target = 5174A49F2D50B2A600C0EC9E /* LocationBasedWeather */;
 		};
@@ -153,7 +153,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6UR3X5MRY6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LocationBasedWeather/Info.plist;
+				INFOPLIST_FILE = LocationBasedWeather/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -185,7 +185,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6UR3X5MRY6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LocationBasedWeather/Info.plist;
+				INFOPLIST_FILE = LocationBasedWeather/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
