@@ -51,8 +51,15 @@ final class ImagePickerViewController: UIViewController {
         self.imageCollectionView.delegate = self
         self.imageCollectionView.dataSource = self
         
+        self.configureNavigationItem()
         self.configureHierarchy()
         self.configureLayout()
+    }
+    
+    private func configureNavigationItem() {
+        let rightItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(self.phPickerTapped))
+        
+        self.navigationItem.setRightBarButton(rightItem, animated: true)
     }
     
     private func configureHierarchy() {
