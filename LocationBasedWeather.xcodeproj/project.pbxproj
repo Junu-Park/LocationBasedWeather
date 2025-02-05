@@ -14,6 +14,7 @@
 
 /* Begin PBXFileReference section */
 		5174A5A22D511C5200C0EC9E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		51E4E4DA2D536942009B9D6F /* LocationBasedWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = LocationBasedWeather.app; path = "/Users/junupark/Desktop/SeSAC iOS/7주차/2월 4일 화요일 26일차/LocationBasedWeather/build/Debug-iphoneos/LocationBasedWeather.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -82,6 +83,7 @@
 				5174A4CB2D50B5B200C0EC9E /* Alamofire */,
 			);
 			productName = LocationBasedWeather;
+			productReference = 51E4E4DA2D536942009B9D6F /* LocationBasedWeather.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
